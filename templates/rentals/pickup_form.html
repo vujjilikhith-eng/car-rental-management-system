@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block page_title %}Process Pickup — Reservation #{{ reservation.reservation_id }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:600px;">
+  <div class="mb-3 p-3 bg-light rounded">
+    <strong>{{ reservation.customer_name }}</strong><br>
+    {{ reservation.reg_number }} — {{ reservation.model }}<br>
+    <span class="text-muted">Reserved: {{ reservation.start_date }} → {{ reservation.end_date }}</span>
+  </div>
+
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Pickup Branch</label>
+      <select name="pickup_branch_id" class="form-select" required>
+        {% for b in branches %}
+          <option value="{{ b.branch_id }}">{{ b.branch_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Odometer Reading (km)</label>
+      <input type="number" name="pickup_odometer" class="form-control" required min="0">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fuel Level (%)</label>
+      <input type="number" name="fuel_level_pct" class="form-control" required min="0" max="100" value="100">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Vehicle Condition</label>
+      <select name="condition_rating" class="form-select">
+        <option>EXCELLENT</option>
+        <option>GOOD</option>
+        <option>FAIR</option>
+        <option>POOR</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Inspection Notes (optional)</label>
+      <textarea name="notes" class="form-control" rows="2"></textarea>
+    </div>
+    <button class="btn btn-brand">Confirm Pickup</button>
+    <a href="{{ url_for('reservations.detail', reservation_id=reservation.reservation_id) }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}

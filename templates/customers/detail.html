@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block page_title %}{{ customer.name }}{% endblock %}
+{% block content %}
+
+<div class="card p-4 mb-3">
+  <div class="row">
+    <div class="col-md-3"><strong>Licence No.</strong><br>{{ customer.licence_number }}</div>
+    <div class="col-md-3"><strong>Licence Expiry</strong><br>{{ customer.licence_expiry }}</div>
+    <div class="col-md-3"><strong>Phone</strong><br>{{ customer.phone }}</div>
+    <div class="col-md-3"><strong>Email</strong><br>{{ customer.email or '—' }}</div>
+  </div>
+</div>
+
+<div class="card p-3">
+  <div class="section-title">Reservation History</div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Vehicle</th><th>Dates</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+      {% for r in reservations %}
+        <tr>
+          <td>{{ r.reg_number }} ({{ r.model }})</td>
+          <td>{{ r.start_date }} → {{ r.end_date }}</td>
+          <td><span class="badge badge-{{ r.status|lower }}">{{ r.status }}</span></td>
+          <td><a href="{{ url_for('reservations.detail', reservation_id=r.reservation_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="text-muted">No reservations yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

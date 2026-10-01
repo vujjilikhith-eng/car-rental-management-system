@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit Category' if category else 'Add Category' }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:520px;">
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Category Name</label>
+      <input type="text" name="category_name" class="form-control" required value="{{ category.category_name if category else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Seating Capacity</label>
+      <input type="number" name="seating_capacity" class="form-control" min="1" required value="{{ category.seating_capacity if category else '' }}">
+    </div>
+    <button class="btn btn-brand">Save</button>
+    <a href="{{ url_for('categories.index') }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}

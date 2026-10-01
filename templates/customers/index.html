@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block page_title %}Customers{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="section-title mb-0">Customers</div>
+  <a href="{{ url_for('customers.new') }}" class="btn btn-brand"><i class="bi bi-plus-lg"></i> Register Customer</a>
+</div>
+
+<form class="mb-3" method="get">
+  <input type="text" name="q" class="form-control" style="max-width:340px;" placeholder="Search name, licence or phone..." value="{{ q }}">
+</form>
+
+<div class="card p-3">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Name</th><th>Licence No.</th><th>Licence Expiry</th><th>Phone</th><th>Email</th><th></th></tr></thead>
+      <tbody>
+      {% for c in customers %}
+        <tr>
+          <td><a href="{{ url_for('customers.detail', customer_id=c.customer_id) }}">{{ c.name }}</a></td>
+          <td>{{ c.licence_number }}</td>
+          <td>{{ c.licence_expiry }}</td>
+          <td>{{ c.phone }}</td>
+          <td>{{ c.email or '—' }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('customers.edit', customer_id=c.customer_id) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+            <form action="{{ url_for('customers.delete', customer_id=c.customer_id) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this customer?');">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-muted">No customers found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

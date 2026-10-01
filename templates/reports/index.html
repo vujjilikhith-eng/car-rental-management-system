@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block page_title %}Reports{% endblock %}
+{% block content %}
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <div class="section-title">Monthly Revenue</div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Month</th><th>Invoices</th><th class="text-end">Revenue</th></tr></thead>
+        <tbody>
+        {% for m in monthly_revenue %}
+          <tr><td>{{ m.month }}</td><td>{{ m.invoice_count }}</td><td class="text-end">{{ m.revenue | money }}</td></tr>
+        {% else %}
+          <tr><td colspan="3" class="text-muted">No invoice data yet.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <div class="section-title">Category Demand (reservations)</div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Category</th><th class="text-end">Reservations</th></tr></thead>
+        <tbody>
+        {% for c in category_demand %}
+          <tr><td>{{ c.category_name }}</td><td class="text-end">{{ c.reservation_count }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <div class="section-title">Top Customers by Spend</div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Customer</th><th>Trips</th><th class="text-end">Total Spent</th></tr></thead>
+        <tbody>
+        {% for c in top_customers %}
+          <tr><td>{{ c.name }}</td><td>{{ c.trip_count }}</td><td class="text-end">{{ c.total_spent | money }}</td></tr>
+        {% else %}
+          <tr><td colspan="3" class="text-muted">No completed rentals yet.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card p-3 h-100">
+      <div class="section-title">Branch Performance</div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Branch</th><th>Reservations</th><th class="text-end">Revenue</th></tr></thead>
+        <tbody>
+        {% for b in branch_performance %}
+          <tr><td>{{ b.branch_name }}</td><td>{{ b.reservations }}</td><td class="text-end">{{ b.revenue | money }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card p-3">
+  <div class="section-title">Fleet Status (vw_fleet_status view)</div>
+  <table class="table table-sm mb-0">
+    <thead><tr><th>Reg No.</th><th>Model</th><th>Category</th><th>Branch</th><th>Status</th></tr></thead>
+    <tbody>
+    {% for v in fleet_status %}
+      <tr>
+        <td>{{ v.reg_number }}</td><td>{{ v.model }}</td><td>{{ v.category_name }}</td><td>{{ v.branch_name }}</td>
+        <td><span class="badge badge-{{ v.status|lower }}">{{ v.status }}</span></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

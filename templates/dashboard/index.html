@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ fleet.total or 0 }}</div>
+      <div class="kpi-label">Total Fleet</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ fleet.available or 0 }}</div>
+      <div class="kpi-label">Available Vehicles</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ active_rentals }}</div>
+      <div class="kpi-label">Active Rentals</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ month_revenue | money }}</div>
+      <div class="kpi-label">Revenue This Month</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card p-3">
+      <div class="section-title">Recent Reservations</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead><tr><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Status</th></tr></thead>
+          <tbody>
+          {% for r in recent_reservations %}
+            <tr>
+              <td>{{ r.customer_name }}</td>
+              <td>{{ r.reg_number }} <span class="text-muted">({{ r.model }})</span></td>
+              <td>{{ r.start_date }} → {{ r.end_date }}</td>
+              <td><span class="badge badge-{{ r.status|lower }}">{{ r.status }}</span></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="text-muted">No reservations yet.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card p-3">
+      <div class="section-title">Ongoing Rentals</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead><tr><th>Vehicle</th><th>Customer</th><th>Picked Up</th><th></th></tr></thead>
+          <tbody>
+          {% for r in ongoing_rentals %}
+            <tr>
+              <td>{{ r.reg_number }} <span class="text-muted">({{ r.model }})</span></td>
+              <td>{{ r.customer_name }}</td>
+              <td>{{ r.pickup_date.strftime('%d %b, %I:%M %p') }}</td>
+              <td><a href="{{ url_for('rentals.detail', rental_id=r.rental_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="text-muted">No vehicles out right now.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

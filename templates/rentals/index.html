@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block page_title %}Rentals{% endblock %}
+{% block content %}
+
+<div class="section-title mb-3">Rentals</div>
+
+<ul class="nav nav-pills mb-3">
+  <li class="nav-item"><a class="nav-link {{ 'active' if selected_status=='ongoing' }}" href="{{ url_for('rentals.index', status='ongoing') }}">Ongoing</a></li>
+  <li class="nav-item"><a class="nav-link {{ 'active' if selected_status=='completed' }}" href="{{ url_for('rentals.index', status='completed') }}">Completed</a></li>
+  <li class="nav-item"><a class="nav-link {{ 'active' if selected_status=='all' }}" href="{{ url_for('rentals.index', status='all') }}">All</a></li>
+</ul>
+
+<div class="card p-3">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>ID</th><th>Vehicle</th><th>Customer</th><th>Pickup</th><th>Return</th><th></th></tr></thead>
+      <tbody>
+      {% for r in rentals %}
+        <tr>
+          <td>{{ r.rental_id }}</td>
+          <td>{{ r.reg_number }} ({{ r.model }})</td>
+          <td>{{ r.customer_name }}</td>
+          <td>{{ r.pickup_date.strftime('%d %b %Y, %I:%M %p') }}</td>
+          <td>{{ r.return_date.strftime('%d %b %Y, %I:%M %p') if r.return_date else '—' }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('rentals.detail', rental_id=r.rental_id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+            {% if not r.return_date %}
+              <a href="{{ url_for('rentals.process_return', rental_id=r.rental_id) }}" class="btn btn-sm btn-brand">Process Return</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-muted">No rentals found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

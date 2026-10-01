@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit Branch' if branch else 'Add Branch' }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:520px;">
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Branch Name</label>
+      <input type="text" name="branch_name" class="form-control" required value="{{ branch.branch_name if branch else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">City</label>
+      <input type="text" name="city" class="form-control" required value="{{ branch.city if branch else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="text" name="phone" class="form-control" required value="{{ branch.phone if branch else '' }}">
+    </div>
+    <button class="btn btn-brand">Save</button>
+    <a href="{{ url_for('branches.index') }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}

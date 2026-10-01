@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block page_title %}Process Return — Rental #{{ rental.rental_id }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:650px;">
+  <div class="mb-3 p-3 bg-light rounded">
+    <strong>{{ rental.reg_number }}</strong> — {{ rental.model }}<br>
+    <span class="text-muted">Picked up: {{ rental.pickup_date.strftime('%d %b %Y, %I:%M %p') }} at odometer {{ rental.pickup_odometer }} km, fuel {{ pickup_fuel }}%</span>
+  </div>
+
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Return Branch</label>
+      <select name="return_branch_id" class="form-select" required>
+        {% for b in branches %}
+          <option value="{{ b.branch_id }}">{{ b.branch_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Return Odometer Reading (km)</label>
+      <input type="number" name="return_odometer" class="form-control" required min="{{ rental.pickup_odometer }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fuel Level on Return (%)</label>
+      <input type="number" name="fuel_level_pct" class="form-control" required min="0" max="100">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Vehicle Condition on Return</label>
+      <select name="condition_rating" class="form-select">
+        <option>EXCELLENT</option>
+        <option selected>GOOD</option>
+        <option>FAIR</option>
+        <option>POOR</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Inspection Notes (optional)</label>
+      <textarea name="notes" class="form-control" rows="2"></textarea>
+    </div>
+
+    <hr>
+    <label class="form-label fw-bold">Damage Reported (if any)</label>
+    <div id="damage-rows">
+      <div class="row g-2 mb-2 damage-row">
+        <div class="col-7">
+          <input type="text" name="damage_desc" class="form-control" placeholder="Description (e.g. scratch on bumper)">
+        </div>
+        <div class="col-4">
+          <input type="number" step="0.01" name="damage_cost" class="form-control" placeholder="Repair cost (₹)">
+        </div>
+        <div class="col-1"></div>
+      </div>
+    </div>
+    <button type="button" id="add-damage-row" class="btn btn-sm btn-outline-secondary mb-3"><i class="bi bi-plus"></i> Add another damage item</button>
+
+    <div class="alert alert-info small">
+      Billing is calculated automatically from the active rate plan (days × daily rate + km × per-km rate), plus a fuel-shortfall charge and any damage cost entered above.
+    </div>
+
+    <button class="btn btn-brand">Complete Return &amp; Generate Invoice</button>
+    <a href="{{ url_for('rentals.detail', rental_id=rental.rental_id) }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('add-damage-row').addEventListener('click', function () {
+  const container = document.getElementById('damage-rows');
+  const row = container.firstElementChild.cloneNode(true);
+  row.querySelectorAll('input').forEach(i => i.value = '');
+  container.appendChild(row);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit Customer' if customer else 'Register Customer' }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:560px;">
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input type="text" name="name" class="form-control" required value="{{ customer.name if customer else '' }}">
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Licence Number</label>
+        <input type="text" name="licence_number" class="form-control" required value="{{ customer.licence_number if customer else '' }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Licence Expiry</label>
+        <input type="date" name="licence_expiry" class="form-control" required value="{{ customer.licence_expiry if customer else '' }}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Phone</label>
+        <input type="text" name="phone" class="form-control" required value="{{ customer.phone if customer else '' }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Email (optional)</label>
+        <input type="email" name="email" class="form-control" value="{{ customer.email if customer else '' }}">
+      </div>
+    </div>
+    <button class="btn btn-brand">Save</button>
+    <a href="{{ url_for('customers.index') }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}

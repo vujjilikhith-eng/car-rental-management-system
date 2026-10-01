@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block page_title %}Rate Plans{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="section-title mb-0">Rate Plans</div>
+  <a href="{{ url_for('rateplans.new') }}" class="btn btn-brand"><i class="bi bi-plus-lg"></i> Add Rate Plan</a>
+</div>
+
+<div class="card p-3">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Category</th><th>Daily Rate</th><th>Per KM Rate</th><th>Effective From</th><th></th></tr></thead>
+      <tbody>
+      {% for p in plans %}
+        <tr>
+          <td>{{ p.category_name }}</td>
+          <td>{{ p.daily_rate | money }}</td>
+          <td>{{ p.per_km_rate | money }}</td>
+          <td>{{ p.effective_from }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('rateplans.edit', rate_plan_id=p.rate_plan_id) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+            <form action="{{ url_for('rateplans.delete', rate_plan_id=p.rate_plan_id) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this rate plan?');">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="text-muted">No rate plans yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

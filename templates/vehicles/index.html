@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block page_title %}Vehicles{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="section-title mb-0">Fleet</div>
+  <a href="{{ url_for('vehicles.new') }}" class="btn btn-brand"><i class="bi bi-plus-lg"></i> Add Vehicle</a>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-auto">
+    <select name="branch_id" class="form-select" onchange="this.form.submit()">
+      <option value="">All Branches</option>
+      {% for b in branches %}
+        <option value="{{ b.branch_id }}" {{ 'selected' if selected_branch == b.branch_id }}>{{ b.branch_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <select name="status" class="form-select" onchange="this.form.submit()">
+      <option value="">All Statuses</option>
+      {% for s in ['AVAILABLE','RENTED','MAINTENANCE'] %}
+        <option value="{{ s }}" {{ 'selected' if selected_status == s }}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</form>
+
+<div class="card p-3">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Reg No.</th><th>Model</th><th>Category</th><th>Year</th><th>Branch</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+      {% for v in vehicles %}
+        <tr>
+          <td>{{ v.reg_number }}</td>
+          <td>{{ v.model }}</td>
+          <td>{{ v.category_name }}</td>
+          <td>{{ v.year_made }}</td>
+          <td>{{ v.branch_name }}</td>
+          <td><span class="badge badge-{{ v.status|lower }}">{{ v.status }}</span></td>
+          <td class="text-end">
+            <a href="{{ url_for('vehicles.edit', vehicle_id=v.vehicle_id) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+            <form action="{{ url_for('vehicles.delete', vehicle_id=v.vehicle_id) }}" method="post" class="d-inline" onsubmit="return confirm('Delete this vehicle?');">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-muted">No vehicles found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

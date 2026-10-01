@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Car Rental Management{% endblock %} | RentDrive</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <i class="bi bi-car-front-fill"></i> RentDrive
+    </div>
+    <div class="sidebar-section">Overview</div>
+    <a href="{{ url_for('dashboard.index') }}" class="nav-link {{ 'active' if request.blueprint == 'dashboard' }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+    <div class="sidebar-section">Master Data</div>
+    <a href="{{ url_for('branches.index') }}" class="nav-link {{ 'active' if request.blueprint == 'branches' }}"><i class="bi bi-building"></i> Branches</a>
+    <a href="{{ url_for('categories.index') }}" class="nav-link {{ 'active' if request.blueprint == 'categories' }}"><i class="bi bi-tags"></i> Vehicle Categories</a>
+    <a href="{{ url_for('vehicles.index') }}" class="nav-link {{ 'active' if request.blueprint == 'vehicles' }}"><i class="bi bi-car-front"></i> Vehicles</a>
+    <a href="{{ url_for('rateplans.index') }}" class="nav-link {{ 'active' if request.blueprint == 'rateplans' }}"><i class="bi bi-cash-coin"></i> Rate Plans</a>
+    <a href="{{ url_for('customers.index') }}" class="nav-link {{ 'active' if request.blueprint == 'customers' }}"><i class="bi bi-people"></i> Customers</a>
+
+    <div class="sidebar-section">Operations</div>
+    <a href="{{ url_for('reservations.index') }}" class="nav-link {{ 'active' if request.blueprint == 'reservations' }}"><i class="bi bi-calendar-check"></i> Reservations</a>
+    <a href="{{ url_for('rentals.index') }}" class="nav-link {{ 'active' if request.blueprint == 'rentals' }}"><i class="bi bi-key"></i> Rentals</a>
+    <a href="{{ url_for('invoices.index') }}" class="nav-link {{ 'active' if request.blueprint == 'invoices' }}"><i class="bi bi-receipt"></i> Invoices &amp; Payments</a>
+
+    <div class="sidebar-section">Insights</div>
+    <a href="{{ url_for('reports.index') }}" class="nav-link {{ 'active' if request.blueprint == 'reports' }}"><i class="bi bi-bar-chart"></i> Reports</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="topbar">
+      <h5 class="mb-0">{% block page_title %}Dashboard{% endblock %}</h5>
+    </div>
+    <div class="content-body">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category=='error' else category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

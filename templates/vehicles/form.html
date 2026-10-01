@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block page_title %}{{ 'Edit Vehicle' if vehicle else 'Add Vehicle' }}{% endblock %}
+{% block content %}
+
+<div class="card p-4" style="max-width:560px;">
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Registration Number</label>
+      <input type="text" name="reg_number" class="form-control" required value="{{ vehicle.reg_number if vehicle else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Model</label>
+      <input type="text" name="model" class="form-control" required value="{{ vehicle.model if vehicle else '' }}">
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Category</label>
+        <select name="category_id" class="form-select" required>
+          {% for c in categories %}
+            <option value="{{ c.category_id }}" {{ 'selected' if vehicle and vehicle.category_id == c.category_id }}>{{ c.category_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Branch</label>
+        <select name="branch_id" class="form-select" required>
+          {% for b in branches %}
+            <option value="{{ b.branch_id }}" {{ 'selected' if vehicle and vehicle.branch_id == b.branch_id }}>{{ b.branch_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Year Made</label>
+        <input type="number" name="year_made" class="form-control" min="1990" max="2030" required value="{{ vehicle.year_made if vehicle else '' }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          {% for s in ['AVAILABLE','RENTED','MAINTENANCE'] %}
+            <option value="{{ s }}" {{ 'selected' if vehicle and vehicle.status == s }}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-brand">Save</button>
+    <a href="{{ url_for('vehicles.index') }}" class="btn btn-link">Cancel</a>
+  </form>
+</div>
+{% endblock %}

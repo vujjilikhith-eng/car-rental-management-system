@@ -1,0 +1,145 @@
+:root {
+  --brand: #2b5d4c;
+  --brand-dark: #1e4236;
+  --bg: #f4f6f5;
+  --card-border: #e3e7e5;
+}
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #23302b;
+}
+
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 230px;
+  background: var(--brand-dark);
+  color: #dce8e2;
+  flex-shrink: 0;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.sidebar-brand i { color: #7fd6ab; margin-right: 6px; }
+
+.sidebar-section {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7f9a90;
+  padding: 0.9rem 1.25rem 0.3rem;
+}
+
+.sidebar .nav-link {
+  color: #cfe3da;
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  border-left: 3px solid transparent;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-left-color: #7fd6ab;
+  font-weight: 600;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid var(--card-border);
+  padding: 0.9rem 1.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.content-body {
+  padding: 1.75rem;
+}
+
+.card {
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  padding: 1.1rem 1.3rem;
+}
+
+.kpi-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+}
+
+.kpi-label {
+  font-size: 0.82rem;
+  color: #6b7d75;
+}
+
+.btn-brand {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.btn-brand:hover {
+  background: var(--brand-dark);
+  border-color: var(--brand-dark);
+  color: #fff;
+}
+
+table thead {
+  background: #f0f3f1;
+}
+
+table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #5a6b63;
+  font-weight: 600;
+}
+
+.badge-available { background:#1e7e4f; }
+.badge-rented { background:#b8860b; }
+.badge-maintenance { background:#a33; }
+.badge-booked { background:#2b5d4c; }
+.badge-cancelled { background:#888; }
+.badge-completed { background:#3060a8; }
+
+.section-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}

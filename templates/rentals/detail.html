@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block page_title %}Rental #{{ rental.rental_id }}{% endblock %}
+{% block content %}
+
+<div class="card p-4 mb-3">
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <h5 class="mb-1">{{ rental.reg_number }} — {{ rental.model }}</h5>
+      <div class="text-muted">{{ rental.category_name }} · {{ rental.customer_name }} ({{ rental.phone }})</div>
+    </div>
+    {% if rental.return_date %}
+      <span class="badge badge-completed fs-6">RETURNED</span>
+    {% else %}
+      <span class="badge badge-rented fs-6">ONGOING</span>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="col-md-3"><strong>Pickup</strong><br>{{ rental.pickup_date.strftime('%d %b %Y, %I:%M %p') }}<br>{{ rental.pickup_branch_name }}<br>Odometer: {{ rental.pickup_odometer }} km</div>
+    <div class="col-md-3">
+      <strong>Return</strong><br>
+      {% if rental.return_date %}
+        {{ rental.return_date.strftime('%d %b %Y, %I:%M %p') }}<br>{{ rental.return_branch_name }}<br>Odometer: {{ rental.return_odometer }} km
+      {% else %}
+        Not yet returned
+      {% endif %}
+    </div>
+    <div class="col-md-3">
+      <strong>Fuel</strong><br>
+      {% for f in fuel_readings %}
+        {{ f.reading_type }}: {{ f.fuel_level_pct }}%<br>
+      {% endfor %}
+    </div>
+    <div class="col-md-3">
+      <strong>Condition</strong><br>
+      {% for i in inspections %}
+        {{ i.inspection_type }}: {{ i.condition_rating }}{% if i.notes %} — {{ i.notes }}{% endif %}<br>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% if damages %}
+<div class="card p-3 mb-3">
+  <div class="section-title">Damage Reported</div>
+  <table class="table table-sm mb-0">
+    <thead><tr><th>Description</th><th>Repair Cost</th><th>Reported</th></tr></thead>
+    <tbody>
+    {% for d in damages %}
+      <tr><td>{{ d.description }}</td><td>{{ d.repair_cost | money }}</td><td>{{ d.reported_date }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<div class="d-flex gap-2">
+  {% if not rental.return_date %}
+    <a href="{{ url_for('rentals.process_return', rental_id=rental.rental_id) }}" class="btn btn-brand"><i class="bi bi-arrow-return-left"></i> Process Return</a>
+  {% elif invoice %}
+    <a href="{{ url_for('invoices.detail', invoice_id=invoice.invoice_id) }}" class="btn btn-outline-secondary"><i class="bi bi-receipt"></i> View Invoice #{{ invoice.invoice_id }}</a>
+  {% endif %}
+</div>
+
+{% endblock %}
